@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Utsav 2026 - the annual technical and cultural festival. Browse events, see the schedule and register online.">
+  <title>Utsav 2026 | College Event Portal</title>
+  <style>
+/* ==========================================================
+   UTSAV 2026 - College Event Portal
+   Mobile-first CSS: base styles are for phones,
+   media queries add tablet (768px) and desktop (1024px) layouts.
+   ========================================================== */
+
+/* ---------- 1. Design tokens ---------- */
+:root {
+  --plum: #2b1055;
+  --plum-dark: #1c0a3b;
+  --saffron: #ff8a00;
+  --magenta: #e0245e;
+  --ink: #241b3a;
+  --muted: #6a6483;
+  --bg: #ffffff;
+  --bg-alt: #f5f2fb;
+  --line: #ddd6ee;
+  --ok: #17805f;
+  --ok-bg: #e2f6ee;
+  --err: #c0213f;
+  --err-bg: #fdebee;
+  --radius: 12px;
+  --shadow: 0 2px 10px rgba(43, 16, 85, .08);
+}
+
+/* ---------- 2. Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body {
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 1rem;              /* 16px: readable on phones */
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--bg);
+}
+img { max-width: 100%; display: block; }
+a { color: var(--magenta); }
+ul { list-style: none; }
+h1, h2, h3 { line-height: 1.2; }
+h2 { font-size: 1.7rem; margin-bottom: 18px; color: var(--plum); }
+h3 { font-size: 1.15rem; margin-bottom: 8px; color: var(--plum); }
+.small { font-size: .88rem; }
+.muted { color: var(--muted); margin-bottom: 14px; }
+
+.container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 18px; }
+.narrow { max-width: 760px; }
+.section { padding: 48px 0; }
+.section.alt { background: var(--bg-alt); }
+
+.skip-link {
+  position: absolute; left: -999px; top: 8px;
+  background: #fff; color: var(--plum); padding: 8px 14px; border-radius: 6px; z-index: 200;
+}
+.skip-link:focus { left: 8px; }
+
+:focus-visible { outline: 3px solid var(--saffron); outline-offset: 2px; }
+
+/* ---------- 3. Buttons (touch-friendly: min 44px high) ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 10px 22px;
+  border-radius: 8px; border: 2px solid transparent;
+  font: inherit; font-weight: 600; text-decoration: none; cursor: pointer;
+  transition: background .2s, color .2s, transform .1s;
+}
+.btn:active { transform: scale(.97); }
+.btn-primary { background: var(--magenta); color: #fff; }
+.btn-primary:hover { background: #bf1a4e; }
+.btn-ghost { border-color: #fff; color: #fff; background: transparent; }
+.btn-ghost:hover { background: rgba(255, 255, 255, .15); }
+.btn-outline { border-color: var(--line); color: var(--plum); background: #fff; }
+.btn-outline:hover { background: var(--bg-alt); }
+.btn-row { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* ---------- 4. Header + navigation ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--plum);
+  border-bottom: 3px solid var(--saffron);
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: 60px; flex-wrap: wrap;
+}
+.brand { color: #fff; font-size: 1.4rem; font-weight: 800; text-decoration: none; letter-spacing: .5px; }
+.brand span { color: var(--saffron); }
+
+/* Hamburger button (phones) */
+.nav-toggle {
+  width: 44px; height: 44px; background: transparent; border: none; cursor: pointer;
+  display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px;
+}
+.nav-toggle span { display: block; width: 24px; height: 3px; background: #fff; border-radius: 2px; transition: transform .2s, opacity .2s; }
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+/* On phones the menu is hidden until the button is tapped */
+.site-nav { display: none; width: 100%; padding-bottom: 10px; }
+.site-nav.open { display: block; }
+.site-nav a {
+  display: block; padding: 12px 8px; color: #e9e2fb; text-decoration: none;
+  border-top: 1px solid rgba(255, 255, 255, .12);
+}
+.site-nav a:hover, .site-nav a.active { color: var(--saffron); }
+
+/* ---------- 5. Hero ---------- */
+.hero {
+  background: linear-gradient(135deg, var(--plum-dark), var(--plum) 55%, #6a1b6e);
+  color: #fff; text-align: center; padding: 64px 0 56px;
+}
+.hero-kicker { color: var(--saffron); font-weight: 600; margin-bottom: 8px; }
+.hero h1 { font-size: 3.2rem; letter-spacing: 1px; margin-bottom: 10px; }
+.hero-sub { font-size: 1.1rem; max-width: 520px; margin: 0 auto 26px; color: #e9e2fb; }
+
+.countdown { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
+.countdown div {
+  min-width: 68px; padding: 10px 6px;
+  background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .25); border-radius: 10px;
+}
+.countdown strong { display: block; font-size: 1.7rem; line-height: 1.1; }
+.countdown span { font-size: .75rem; color: #d9cff2; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+
+/* ---------- 6. Highlights ---------- */
+.highlights { padding: 0; background: var(--bg-alt); }
+.highlight-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); }
+.highlight { background: var(--bg-alt); text-align: center; padding: 22px 8px; }
+.highlight strong { display: block; font-size: 1.8rem; color: var(--magenta); }
+.highlight span { color: var(--muted); font-size: .9rem; }
+
+/* ---------- 7. Shared layout pieces ---------- */
+.two-col { display: grid; grid-template-columns: 1fr; gap: 22px; }
+.panel {
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px;
+}
+.two-col .panel { margin-bottom: 0; }
+
+/* Announcements */
+.announcement-list { display: flex; flex-direction: column; gap: 10px; }
+.announcement-list li {
+  background: #fff; border-left: 5px solid var(--saffron); border-radius: 8px;
+  padding: 12px 14px; box-shadow: var(--shadow);
+}
+.announcement-list time { display: block; font-size: .78rem; color: var(--muted); }
+.announcement-list li.new { animation: flash 1.2s ease-out; }
+@keyframes flash { from { background: #fff1d6; } to { background: #fff; } }
+
+/* ---------- 8. Filters ---------- */
+.filters { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
+.filter-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  min-height: 44px; padding: 8px 18px; border-radius: 30px;
+  border: 2px solid var(--line); background: #fff; color: var(--plum);
+  font: inherit; font-weight: 600; cursor: pointer;
+}
+.chip:hover { border-color: var(--magenta); }
+.chip.active { background: var(--plum); border-color: var(--plum); color: #fff; }
+.day-filter { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+
+/* ---------- 9. Event cards ---------- */
+.card-grid { display: grid; grid-template-columns: 1fr; gap: 18px; }
+.event-card {
+  background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 18px; display: flex; flex-direction: column;
+  border-top: 5px solid var(--plum);
+}
+.event-card[data-category="Technical"] { border-top-color: #1d7fd1; }
+.event-card[data-category="Cultural"]  { border-top-color: var(--magenta); }
+.event-card[data-category="Sports"]    { border-top-color: #17a066; }
+
+.tag {
+  align-self: flex-start; font-size: .75rem; font-weight: 700; padding: 3px 10px;
+  border-radius: 20px; background: var(--bg-alt); color: var(--plum); margin-bottom: 8px;
+}
+.event-card h3 { margin-bottom: 6px; }
+.event-meta { font-size: .9rem; color: var(--muted); margin-bottom: 10px; }
+.event-meta li { padding: 1px 0; }
+.event-desc { flex: 1; margin-bottom: 14px; font-size: .95rem; }
+.event-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.seats { font-size: .85rem; font-weight: 600; color: var(--ok); }
+.seats.low { color: var(--saffron); }
+.seats.full { color: var(--err); }
+.btn[disabled] { background: #c9c3d9; border-color: #c9c3d9; color: #fff; cursor: not-allowed; }
+
+.empty-state { padding: 30px; text-align: center; color: var(--muted); background: #fff; border-radius: var(--radius); }
+
+/* ---------- 10. Tables (schedule + registrations) ---------- */
+.table-wrap { overflow-x: auto; }
+.data-table { width: 100%; border-collapse: collapse; background: #fff; }
+.data-table th, .data-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--line); }
+.data-table thead th { background: var(--plum); color: #fff; font-size: .9rem; }
+.data-table tbody tr:nth-child(even) { background: var(--bg-alt); }
+.day-block { margin-bottom: 26px; }
+.day-block h3 { background: var(--bg-alt); border-left: 5px solid var(--magenta); padding: 8px 14px; border-radius: 6px; }
+
+/* On phones each schedule row becomes a small stacked card */
+@media (max-width: 600px) {
+  .stack-table thead { position: absolute; left: -9999px; }
+  .stack-table, .stack-table tbody, .stack-table tr, .stack-table td { display: block; width: 100%; }
+  .stack-table tr { border: 1px solid var(--line); border-radius: 8px; margin-bottom: 10px; background: #fff !important; }
+  .stack-table td { border: none; padding: 6px 12px; }
+  .stack-table td::before { content: attr(data-label) ": "; font-weight: 700; color: var(--plum); }
+}
+
+/* ---------- 11. Gallery ---------- */
+.gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.gallery figure { position: relative; overflow: hidden; border-radius: var(--radius); cursor: pointer; background: var(--plum); }
+.gallery img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; transition: transform .3s; }
+.gallery figure:hover img { transform: scale(1.06); }
+.gallery figcaption {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 8px 10px;
+  font-size: .85rem; font-weight: 600; color: #fff; background: linear-gradient(transparent, rgba(0, 0, 0, .7));
+}
+
+.lightbox {
+  position: fixed; inset: 0; z-index: 300; background: rgba(15, 8, 30, .92);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;
+}
+.lightbox[hidden] { display: none; }
+.lightbox img { max-height: 75vh; width: auto; max-width: 100%; border-radius: 8px; }
+.lightbox p { color: #fff; margin-top: 12px; }
+.lightbox-close {
+  position: absolute; top: 12px; right: 14px; width: 48px; height: 48px;
+  font-size: 2rem; line-height: 1; color: #fff; background: transparent; border: none; cursor: pointer;
+}
+
+/* ---------- 12. Forms ---------- */
+.field { display: flex; flex-direction: column; margin-bottom: 14px; flex: 1; }
+.field-row { display: flex; flex-direction: column; }
+label { font-weight: 600; font-size: .92rem; margin-bottom: 5px; }
+input, select, textarea {
+  width: 100%; min-height: 46px; padding: 10px 12px;
+  font: inherit; color: var(--ink); background: #fff;
+  border: 2px solid var(--line); border-radius: 8px;
+}
+textarea { resize: vertical; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--magenta); box-shadow: 0 0 0 3px rgba(224, 36, 94, .15); }
+.field.invalid input, .field.invalid select, .field.invalid textarea { border-color: var(--err); background: var(--err-bg); }
+.error { color: var(--err); font-size: .82rem; min-height: 1.1em; margin-top: 4px; font-weight: 600; }
+
+.message { padding: 14px 16px; border-radius: 8px; margin-bottom: 16px; border-left: 5px solid; }
+.message.success { background: var(--ok-bg); border-color: var(--ok); color: #0d5a42; }
+.message.error-box { background: var(--err-bg); border-color: var(--err); color: var(--err); }
+
+.contact-info p { margin-bottom: 12px; }
+.contact-info a { word-break: break-all; }
+address { font-style: normal; }
+
+/* ---------- 13. Footer ---------- */
+.site-footer { background: var(--plum-dark); color: #d9cff2; padding: 28px 0; }
+.site-footer a { color: var(--saffron); }
+.footer-inner { display: flex; flex-direction: column; gap: 14px; }
+.site-footer strong { color: #fff; font-size: 1.1rem; }
+
+/* ==========================================================
+   TABLET (768px and up)
+   ========================================================== */
+@media (min-width: 768px) {
+  h2 { font-size: 2rem; }
+  .section { padding: 64px 0; }
+  .hero { padding: 90px 0 80px; }
+  .hero h1 { font-size: 4.5rem; }
+  .highlight-grid { grid-template-columns: repeat(4, 1fr); }
+  .two-col { grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+  .card-grid { grid-template-columns: repeat(2, 1fr); }
+  .gallery { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .field-row { flex-direction: row; gap: 16px; }
+  .filters { flex-direction: row; justify-content: space-between; align-items: center; }
+  .footer-inner { flex-direction: row; justify-content: space-between; }
+
+  /* Menu becomes a normal horizontal bar; hamburger disappears */
+  .nav-toggle { display: none; }
+  .site-nav { display: block; width: auto; padding: 0; }
+  .site-nav ul { display: flex; gap: 4px; }
+  .site-nav a { border: none; padding: 8px 12px; border-radius: 6px; font-size: .95rem; }
+  .site-nav a:hover, .site-nav a.active { background: rgba(255, 255, 255, .12); }
+}
+
+/* ==========================================================
+   DESKTOP (1024px and up)
+   ========================================================== */
+@media (min-width: 1024px) {
+  .card-grid { grid-template-columns: repeat(3, 1fr); }
+  .hero h1 { font-size: 5.5rem; }
+}
+
+/* Respect users who turn motion off */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation: none !important; transition: none !important; }
+}
+
+</style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ================= HEADER + NAVIGATION ================= -->
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a href="#home" class="brand">Utsav <span>2026</span></a>
+
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="siteNav" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav id="siteNav" class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#events">Events</a></li>
+          <li><a href="#schedule">Schedule</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#registration">Registration</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ================= HOME ================= -->
+    <section class="hero" id="home">
+      <div class="container hero-inner">
+        <p class="hero-kicker">Your College Name presents</p>
+        <h1>Utsav 2026</h1>
+        <p class="hero-sub">Three days of coding, music, dance and sport. 20 to 22 November 2026.</p>
+
+        <div class="countdown" id="countdown" aria-live="off">
+          <div><strong id="cdDays">00</strong><span>days</span></div>
+          <div><strong id="cdHours">00</strong><span>hours</span></div>
+          <div><strong id="cdMins">00</strong><span>mins</span></div>
+          <div><strong id="cdSecs">00</strong><span>secs</span></div>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#registration" class="btn btn-primary">Register now</a>
+          <a href="#events" class="btn btn-ghost">Browse events</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Event highlights -->
+    <section class="section highlights" aria-label="Festival highlights">
+      <div class="container highlight-grid">
+        <div class="highlight"><strong>12</strong><span>events</span></div>
+        <div class="highlight"><strong>3</strong><span>days</span></div>
+        <div class="highlight"><strong>3</strong><span>categories</span></div>
+        <div class="highlight"><strong>1500+</strong><span>participants expected</span></div>
+      </div>
+    </section>
+
+    <!-- Announcements -->
+    <section class="section" id="announcements">
+      <div class="container">
+        <h2>Latest announcements</h2>
+        <div class="two-col">
+          <ul class="announcement-list" id="announcementList" aria-live="polite"></ul>
+
+          <div class="panel">
+            <h3>Post an announcement</h3>
+            <p class="muted small">Organisers can add an update. It appears at the top of the list straight away.</p>
+            <form id="announceForm" novalidate>
+              <div class="field">
+                <label for="announceText">Announcement</label>
+                <input type="text" id="announceText" maxlength="120" placeholder="e.g. Hackathon venue changed to Lab 3">
+                <small class="error" id="announceError"></small>
+              </div>
+              <div class="btn-row">
+                <button type="submit" class="btn btn-primary">Post</button>
+                <button type="button" class="btn btn-outline" id="announceReset">Restore defaults</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= EVENT LISTINGS ================= -->
+    <section class="section alt" id="events">
+      <div class="container">
+        <h2>Events</h2>
+
+        <div class="filters">
+          <div class="filter-group" role="group" aria-label="Filter by category" id="categoryFilters">
+            <button class="chip active" data-category="All">All</button>
+            <button class="chip" data-category="Technical">Technical</button>
+            <button class="chip" data-category="Cultural">Cultural</button>
+            <button class="chip" data-category="Sports">Sports</button>
+          </div>
+
+          <label class="day-filter">
+            <span>Day</span>
+            <select id="dayFilter">
+              <option value="All">All days</option>
+              <option value="2026-11-20">Fri, 20 Nov</option>
+              <option value="2026-11-21">Sat, 21 Nov</option>
+              <option value="2026-11-22">Sun, 22 Nov</option>
+            </select>
+          </label>
+        </div>
+
+        <p class="muted" id="eventCount" aria-live="polite"></p>
+        <div class="card-grid" id="eventGrid"></div>
+      </div>
+    </section>
+
+    <!-- ================= SCHEDULE ================= -->
+    <section class="section" id="schedule">
+      <div class="container">
+        <h2>Schedule</h2>
+        <div id="scheduleBox"></div>
+      </div>
+    </section>
+
+    <!-- ================= GALLERY ================= -->
+    <section class="section alt" id="gallery">
+      <div class="container">
+        <h2>Gallery</h2>
+        <p class="muted">Moments from last year's festival. Tap a photo to enlarge it.</p>
+        <div class="gallery">
+          <figure><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkRhbmNlIE5pZ2h0Ij4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjZTAyNDVlIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMmIxMDU1Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+CjxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2cpIi8+CjxjaXJjbGUgY3g9IjMzMSIgY3k9Ijc3IiByPSI3MCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xIi8+PGNpcmNsZSBjeD0iNzQiIGN5PSIyNzQiIHI9IjMyIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjIiLz48Y2lyY2xlIGN4PSI1OTYiIGN5PSIyOSIgcj0iODQiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMTUiLz48Y2lyY2xlIGN4PSIzOCIgY3k9IjQ0IiByPSI3NSIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4yNSIvPjxjaXJjbGUgY3g9IjcxIiBjeT0iMTIzIiByPSIzMSIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4yNSIvPjxjaXJjbGUgY3g9IjYwIiBjeT0iMjg5IiByPSIzNSIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xNSIvPjxjaXJjbGUgY3g9IjU5NiIgY3k9IjMxIiByPSI3MCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xIi8+PGNpcmNsZSBjeD0iMjI2IiBjeT0iMjMiIHI9IjM3IiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjIiLz48Y2lyY2xlIGN4PSI0MjkiIGN5PSI3MyIgcj0iODkiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMSIvPjxjaXJjbGUgY3g9IjU4NCIgY3k9IjE1NyIgcj0iNDMiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMSIvPjxjaXJjbGUgY3g9IjU5NSIgY3k9IjI5MiIgcj0iNDQiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMiIvPjxjaXJjbGUgY3g9Ijk5IiBjeT0iMjgwIiByPSIyOCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xIi8+PGNpcmNsZSBjeD0iMjEwIiBjeT0iMjU0IiByPSI4OCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4yNSIvPjxjaXJjbGUgY3g9IjMyMSIgY3k9IjIzOCIgcj0iNzgiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMiIvPgo8dGV4dCB4PSIzMDAiIHk9IjIxNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNmZmZmZmYiPkRhbmNlIE5pZ2h0PC90ZXh0Pgo8dGV4dCB4PSIzMDAiIHk9IjI1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuODUiPlJlcGxhY2Ugd2l0aCB5b3VyIG93biBwaG90bzwvdGV4dD4KPC9zdmc+" alt="Dance night performance" loading="lazy"><figcaption>Dance Night</figcaption></figure>
+          <figure><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IjI0LUhvdXIgSGFja2F0aG9uIj4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMDBhOGU4Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMWIxNDY0Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+CjxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2cpIi8+CjxjaXJjbGUgY3g9IjMwNiIgY3k9IjEyNyIgcj0iNDMiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMTUiLz48Y2lyY2xlIGN4PSI4MyIgY3k9IjI5NCIgcj0iNTgiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMjUiLz48Y2lyY2xlIGN4PSIzNTEiIGN5PSIzNzMiIHI9Ijc3IiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjIiLz48Y2lyY2xlIGN4PSI3NCIgY3k9IjYwIiByPSI4NSIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4yNSIvPjxjaXJjbGUgY3g9IjE2OCIgY3k9IjM4NyIgcj0iNjMiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMTUiLz48Y2lyY2xlIGN4PSI1MDAiIGN5PSIyMTUiIHI9IjI1IiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjEiLz48Y2lyY2xlIGN4PSI1NzEiIGN5PSIyOTMiIHI9IjYwIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjIiLz48Y2lyY2xlIGN4PSIzNTgiIGN5PSIzMDQiIHI9IjgzIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjI1Ii8+PGNpcmNsZSBjeD0iNzAiIGN5PSI0NyIgcj0iNTQiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMjUiLz48Y2lyY2xlIGN4PSI2NiIgY3k9IjMxIiByPSI1OSIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4yNSIvPjxjaXJjbGUgY3g9IjI5MSIgY3k9IjM2NiIgcj0iNjkiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMiIvPjxjaXJjbGUgY3g9IjIzIiBjeT0iMjM2IiByPSI2NSIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xNSIvPjxjaXJjbGUgY3g9IjExOSIgY3k9IjI1MiIgcj0iMjciIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMTUiLz48Y2lyY2xlIGN4PSIyOTQiIGN5PSI2NiIgcj0iNTEiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMjUiLz4KPHRleHQgeD0iMzAwIiB5PSIyMTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ0IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjZmZmZmZmIj4yNC1Ib3VyIEhhY2thdGhvbjwvdGV4dD4KPHRleHQgeD0iMzAwIiB5PSIyNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjIwIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjg1Ij5SZXBsYWNlIHdpdGggeW91ciBvd24gcGhvdG88L3RleHQ+Cjwvc3ZnPg==" alt="Students at the 24-hour hackathon" loading="lazy"><figcaption>24-Hour Hackathon</figcaption></figure>
+          <figure><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkludGVyLURlcHQgQ3JpY2tldCI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzJlY2M3MSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzBiM2QyZSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0idXJsKCNnKSIvPgo8Y2lyY2xlIGN4PSI0MDAiIGN5PSIyNTQiIHI9IjMwIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjE1Ii8+PGNpcmNsZSBjeD0iNDU5IiBjeT0iMjA1IiByPSI5MCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4yIi8+PGNpcmNsZSBjeD0iMTQwIiBjeT0iMjIwIiByPSI5MCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4yIi8+PGNpcmNsZSBjeD0iNDI1IiBjeT0iMTgzIiByPSI2OCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xNSIvPjxjaXJjbGUgY3g9IjE1NCIgY3k9IjQyIiByPSI0MiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xNSIvPjxjaXJjbGUgY3g9IjIzNyIgY3k9IjMzNyIgcj0iNDkiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMSIvPjxjaXJjbGUgY3g9IjQ5NiIgY3k9IjMwMSIgcj0iNDMiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMiIvPjxjaXJjbGUgY3g9IjI4OCIgY3k9IjIiIHI9IjM4IiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjI1Ii8+PGNpcmNsZSBjeD0iNTQ3IiBjeT0iMTg5IiByPSI2MCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xNSIvPjxjaXJjbGUgY3g9IjUyNyIgY3k9IjMxNiIgcj0iMjYiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMjUiLz48Y2lyY2xlIGN4PSI1NzIiIGN5PSIyMDAiIHI9IjcwIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjI1Ii8+PGNpcmNsZSBjeD0iNDAzIiBjeT0iNTMiIHI9IjgxIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjI1Ii8+PGNpcmNsZSBjeD0iNjMiIGN5PSI5NyIgcj0iMjgiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMTUiLz48Y2lyY2xlIGN4PSI0NTEiIGN5PSI4MyIgcj0iMzQiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMiIvPgo8dGV4dCB4PSIzMDAiIHk9IjIxNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNmZmZmZmYiPkludGVyLURlcHQgQ3JpY2tldDwvdGV4dD4KPHRleHQgeD0iMzAwIiB5PSIyNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjIwIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjg1Ij5SZXBsYWNlIHdpdGggeW91ciBvd24gcGhvdG88L3RleHQ+Cjwvc3ZnPg==" alt="Inter-department cricket match" loading="lazy"><figcaption>Inter-Dept Cricket</figcaption></figure>
+          <figure><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IkJhdHRsZSBvZiBCYW5kcyI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2ZmOGEwMCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzRhMGU0ZSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0idXJsKCNnKSIvPgo8Y2lyY2xlIGN4PSI1MyIgY3k9IjUyIiByPSIyMCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xNSIvPjxjaXJjbGUgY3g9IjU0OSIgY3k9IjUxIiByPSI2NiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xIi8+PGNpcmNsZSBjeD0iNzIiIGN5PSIxMDYiIHI9IjY4IiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjE1Ii8+PGNpcmNsZSBjeD0iMjU4IiBjeT0iMTc3IiByPSI2NiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4yNSIvPjxjaXJjbGUgY3g9IjEyNSIgY3k9IjU5IiByPSI4MiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4yNSIvPjxjaXJjbGUgY3g9IjQ5MSIgY3k9IjI0NyIgcj0iNTkiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMSIvPjxjaXJjbGUgY3g9IjE0NyIgY3k9IjUyIiByPSI2MyIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4yIi8+PGNpcmNsZSBjeD0iNDkwIiBjeT0iMzU0IiByPSI0MCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xIi8+PGNpcmNsZSBjeD0iMjEwIiBjeT0iMjcwIiByPSI2NiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xNSIvPjxjaXJjbGUgY3g9IjU1NiIgY3k9IjEzIiByPSI4NyIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4yIi8+PGNpcmNsZSBjeD0iOTMiIGN5PSIzNTYiIHI9IjUzIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjIiLz48Y2lyY2xlIGN4PSIxNzEiIGN5PSIxODIiIHI9IjQ4IiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjIiLz48Y2lyY2xlIGN4PSIyMjgiIGN5PSIzMTMiIHI9IjQ0IiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjE1Ii8+PGNpcmNsZSBjeD0iNDEwIiBjeT0iMzc4IiByPSI0OSIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xNSIvPgo8dGV4dCB4PSIzMDAiIHk9IjIxNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDQiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNmZmZmZmYiPkJhdHRsZSBvZiBCYW5kczwvdGV4dD4KPHRleHQgeD0iMzAwIiB5PSIyNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjIwIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjg1Ij5SZXBsYWNlIHdpdGggeW91ciBvd24gcGhvdG88L3RleHQ+Cjwvc3ZnPg==" alt="Battle of Bands on stage" loading="lazy"><figcaption>Battle of Bands</figcaption></figure>
+          <figure><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlJhbmdvbGkgQ29udGVzdCI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2Y5YzgwZSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2MwMzkyYiIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0idXJsKCNnKSIvPgo8Y2lyY2xlIGN4PSI1MzAiIGN5PSIyNTIiIHI9IjY1IiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjEiLz48Y2lyY2xlIGN4PSIyOCIgY3k9IjE0MyIgcj0iODAiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMiIvPjxjaXJjbGUgY3g9IjE5OCIgY3k9IjM1NCIgcj0iNjQiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMjUiLz48Y2lyY2xlIGN4PSIzNTciIGN5PSIxODYiIHI9IjMwIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjE1Ii8+PGNpcmNsZSBjeD0iMTA0IiBjeT0iMTE2IiByPSI4MCIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xNSIvPjxjaXJjbGUgY3g9IjM0NSIgY3k9IjEwNCIgcj0iODEiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMSIvPjxjaXJjbGUgY3g9IjQ5MCIgY3k9IjMzNCIgcj0iNjQiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMSIvPjxjaXJjbGUgY3g9IjEyMiIgY3k9IjE5OCIgcj0iNDUiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMjUiLz48Y2lyY2xlIGN4PSIxODIiIGN5PSIyMjIiIHI9IjYyIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjEiLz48Y2lyY2xlIGN4PSI0MDUiIGN5PSIyMzciIHI9IjcxIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjEiLz48Y2lyY2xlIGN4PSIxNjIiIGN5PSI4NyIgcj0iMzYiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMSIvPjxjaXJjbGUgY3g9IjE1NCIgY3k9IjMwMiIgcj0iNzkiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMTUiLz48Y2lyY2xlIGN4PSI0ODUiIGN5PSIzMzYiIHI9IjY0IiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjE1Ii8+PGNpcmNsZSBjeD0iNTYxIiBjeT0iMjgwIiByPSIzNiIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xIi8+Cjx0ZXh0IHg9IjMwMCIgeT0iMjE1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI0NCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI2ZmZmZmZiI+UmFuZ29saSBDb250ZXN0PC90ZXh0Pgo8dGV4dCB4PSIzMDAiIHk9IjI1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuODUiPlJlcGxhY2Ugd2l0aCB5b3VyIG93biBwaG90bzwvdGV4dD4KPC9zdmc+" alt="Rangoli contest entries" loading="lazy"><figcaption>Rangoli Contest</figcaption></figure>
+          <figure><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlJvYm8gUmFjZSI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzdiMmZmNyIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzBmMGMyOSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0idXJsKCNnKSIvPgo8Y2lyY2xlIGN4PSIxNCIgY3k9IjM3MSIgcj0iMzMiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMTUiLz48Y2lyY2xlIGN4PSI0NDQiIGN5PSI5OSIgcj0iNDciIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMSIvPjxjaXJjbGUgY3g9IjI1NyIgY3k9IjEwOCIgcj0iNTciIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuMTUiLz48Y2lyY2xlIGN4PSI2MDAiIGN5PSIxNjYiIHI9IjUzIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjI1Ii8+PGNpcmNsZSBjeD0iMTM0IiBjeT0iMzEiIHI9IjY1IiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjI1Ii8+PGNpcmNsZSBjeD0iNTk3IiBjeT0iMjY0IiByPSI3MyIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xNSIvPjxjaXJjbGUgY3g9IjU0NCIgY3k9Ijc3IiByPSI4NyIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xIi8+PGNpcmNsZSBjeD0iNDUwIiBjeT0iMzk3IiByPSI0MyIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xIi8+PGNpcmNsZSBjeD0iMTUzIiBjeT0iODgiIHI9IjM4IiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjI1Ii8+PGNpcmNsZSBjeD0iMTIzIiBjeT0iMjg0IiByPSIyNyIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4yIi8+PGNpcmNsZSBjeD0iNTMwIiBjeT0iMjcxIiByPSI4MSIgZmlsbD0iI2ZmZmZmZiIgb3BhY2l0eT0iMC4xIi8+PGNpcmNsZSBjeD0iNTczIiBjeT0iMjkiIHI9IjUxIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjE1Ii8+PGNpcmNsZSBjeD0iMjgzIiBjeT0iMjEiIHI9IjMyIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjI1Ii8+PGNpcmNsZSBjeD0iNTc1IiBjeT0iMTQiIHI9IjI4IiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjI1Ii8+Cjx0ZXh0IHg9IjMwMCIgeT0iMjE1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIEhlbHZldGljYSwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI0NCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI2ZmZmZmZiI+Um9ibyBSYWNlPC90ZXh0Pgo8dGV4dCB4PSIzMDAiIHk9IjI1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiNmZmZmZmYiIG9wYWNpdHk9IjAuODUiPlJlcGxhY2Ugd2l0aCB5b3VyIG93biBwaG90bzwvdGV4dD4KPC9zdmc+" alt="Robots on the race track" loading="lazy"><figcaption>Robo Race</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= REGISTRATION ================= -->
+    <section class="section" id="registration">
+      <div class="container narrow">
+        <h2>Event registration</h2>
+        <p class="muted">Pick an event and fill in your details. Fields marked * are required.</p>
+
+        <div id="regMessage" role="status" aria-live="polite"></div>
+
+        <form id="regForm" class="panel" novalidate>
+          <div class="field">
+            <label for="rName">Full name *</label>
+            <input type="text" id="rName" autocomplete="name" placeholder="e.g. Jyothi Reddy">
+            <small class="error" id="rNameError"></small>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="rEmail">Email *</label>
+              <input type="email" id="rEmail" autocomplete="email" placeholder="you@college.edu">
+              <small class="error" id="rEmailError"></small>
+            </div>
+            <div class="field">
+              <label for="rMobile">Mobile number *</label>
+              <input type="tel" id="rMobile" autocomplete="tel" inputmode="numeric" maxlength="10" placeholder="10 digits">
+              <small class="error" id="rMobileError"></small>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="rDept">Department *</label>
+              <select id="rDept">
+                <option value="">Select department</option>
+                <option>AI &amp; Machine Learning</option>
+                <option>Computer Science</option>
+                <option>Information Technology</option>
+                <option>Electronics</option>
+                <option>Mechanical</option>
+                <option>Civil</option>
+              </select>
+              <small class="error" id="rDeptError"></small>
+            </div>
+            <div class="field">
+              <label for="rYear">Year *</label>
+              <select id="rYear">
+                <option value="">Select year</option>
+                <option>1st year</option>
+                <option>2nd year</option>
+                <option>3rd year</option>
+                <option>4th year</option>
+              </select>
+              <small class="error" id="rYearError"></small>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="rEvent">Event *</label>
+            <select id="rEvent"></select>
+            <small class="error" id="rEventError"></small>
+          </div>
+
+          <div class="btn-row">
+            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="reset" class="btn btn-outline" id="regReset">Clear</button>
+          </div>
+        </form>
+
+        <div class="panel" id="myRegs" hidden>
+          <h3>Registrations on this device</h3>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>ID</th><th>Name</th><th>Event</th></tr></thead>
+              <tbody id="myRegsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CONTACT ================= -->
+    <section class="section alt" id="contact">
+      <div class="container">
+        <h2>Contact us</h2>
+        <div class="two-col">
+          <address class="panel contact-info">
+            <h3>Festival office</h3>
+            <p><strong>Your College Name</strong><br>Student Activities Centre<br>City, State - 000000</p>
+            <p><strong>Email</strong><br><a href="mailto:utsav@yourcollege.edu">utsav@yourcollege.edu</a></p>
+            <p><strong>Phone</strong><br><a href="tel:+910000000000">+91 00000 00000</a></p>
+            <p><strong>Office hours</strong><br>Mon to Fri, 10:00 AM to 4:00 PM</p>
+          </address>
+
+          <div>
+            <div id="contactMessage" role="status" aria-live="polite"></div>
+            <form id="contactForm" class="panel" novalidate>
+              <h3>Send an enquiry</h3>
+              <div class="field">
+                <label for="cName">Your name *</label>
+                <input type="text" id="cName" autocomplete="name">
+                <small class="error" id="cNameError"></small>
+              </div>
+              <div class="field">
+                <label for="cEmail">Email *</label>
+                <input type="email" id="cEmail" autocomplete="email">
+                <small class="error" id="cEmailError"></small>
+              </div>
+              <div class="field">
+                <label for="cMsg">Message *</label>
+                <textarea id="cMsg" rows="4" maxlength="500"></textarea>
+                <small class="error" id="cMsgError"></small>
+              </div>
+              <button type="submit" class="btn btn-primary">Send message</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>Utsav 2026</strong>
+        <p class="small">Annual technical and cultural festival of Your College Name.</p>
+      </div>
+      <div>
+        <p class="small">&copy; 2026 Your College Name. All rights reserved.</p>
+        <a href="#top" class="small">Back to top</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Image viewer (opens when a gallery photo is tapped) -->
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close image">&times;</button>
+    <img id="lightboxImg" src="" alt="">
+    <p id="lightboxCaption"></p>
+  </div>
+
+  <script>
+/* ==========================================================
+   UTSAV 2026 - College Event Portal
+   JavaScript: data, rendering, filtering, validation, events
+   ========================================================== */
+
+"use strict";
+
+/* ---------- 1. DATA ----------
+   Events live in one array. The cards, the schedule table and the
+   registration dropdown are all built from it, so editing this list
+   updates the whole page. */
+const events = [
+  { id: 1,  name: "CodeSprint Hackathon", category: "Technical", date: "2026-11-20", time: "09:00", venue: "Computer Lab 3",
+    desc: "24-hour team hackathon. Build a working prototype for a real campus problem.", capacity: 60 },
+  { id: 2,  name: "AI Quiz Challenge", category: "Technical", date: "2026-11-20", time: "11:30", venue: "Seminar Hall A",
+    desc: "Rapid-fire quiz on machine learning, data science and AI trends.", capacity: 80 },
+  { id: 3,  name: "Web Design Duel", category: "Technical", date: "2026-11-21", time: "10:00", venue: "Computer Lab 1",
+    desc: "Design and code a responsive landing page in two hours from a surprise brief.", capacity: 40 },
+  { id: 4,  name: "Robo Race", category: "Technical", date: "2026-11-22", time: "10:30", venue: "Mechanical Workshop",
+    desc: "Race your line-following robot through a timed obstacle track.", capacity: 30 },
+  { id: 5,  name: "Battle of Bands", category: "Cultural", date: "2026-11-20", time: "17:00", venue: "Main Auditorium",
+    desc: "Live music contest for college bands. Original songs earn bonus points.", capacity: 50 },
+  { id: 6,  name: "Classical and Folk Dance", category: "Cultural", date: "2026-11-21", time: "16:00", venue: "Open Air Theatre",
+    desc: "Solo and group performances in classical and folk styles.", capacity: 70 },
+  { id: 7,  name: "Rangoli Contest", category: "Cultural", date: "2026-11-21", time: "09:30", venue: "Campus Courtyard",
+    desc: "Create a themed rangoli within 90 minutes using colours and flowers.", capacity: 45 },
+  { id: 8,  name: "Stand-up Open Mic", category: "Cultural", date: "2026-11-22", time: "18:00", venue: "Main Auditorium",
+    desc: "Five minutes on stage. Bring your funniest campus stories.", capacity: 25 },
+  { id: 9,  name: "Inter-Department Cricket", category: "Sports", date: "2026-11-20", time: "08:00", venue: "College Ground",
+    desc: "Knockout T10 tournament between departments.", capacity: 120 },
+  { id: 10, name: "Badminton Singles", category: "Sports", date: "2026-11-21", time: "14:00", venue: "Indoor Stadium",
+    desc: "Singles knockout for men and women. Bring your own racket.", capacity: 32 },
+  { id: 11, name: "Chess Masters", category: "Sports", date: "2026-11-21", time: "11:00", venue: "Library Hall",
+    desc: "Swiss-system chess tournament with 5 rounds.", capacity: 48 },
+  { id: 12, name: "Tug of War Finals", category: "Sports", date: "2026-11-22", time: "15:00", venue: "College Ground",
+    desc: "Final showdown between the top department teams.", capacity: 64 }
+];
+
+const defaultAnnouncements = [
+  { text: "Registrations are open for all 12 events.", time: "2026-10-01T09:00:00" },
+  { text: "Hackathon teams can have up to 4 members.", time: "2026-10-03T14:30:00" },
+  { text: "Carry your college ID card on all three days.", time: "2026-10-04T11:00:00" }
+];
+
+/* ---------- 2. SMALL HELPERS ---------- */
+
+// Short way to find one element
+const $ = (selector) => document.querySelector(selector);
+
+// Stops user-typed text from being treated as HTML
+function esc(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function formatDate(iso, long) {
+  return new Date(iso + "T00:00:00").toLocaleDateString("en-IN",
+    long ? { weekday: "long", day: "numeric", month: "long", year: "numeric" }
+         : { weekday: "short", day: "numeric", month: "short" });
+}
+
+function formatTime(t) {
+  const [h, m] = t.split(":").map(Number);
+  return `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${h >= 12 ? "PM" : "AM"}`;
+}
+
+// Saving to the browser can fail (private mode), so every call is wrapped
+function load(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch (e) {
+    return fallback;
+  }
+}
+function save(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* ignore */ }
+}
+
+/* ---------- 3. STATE ---------- */
+let registrations = load("utsav_registrations", []);
+let announcements = load("utsav_announcements", defaultAnnouncements);
+let activeCategory = "All";
+let activeDay = "All";
+
+function seatsLeft(eventId) {
+  const ev = events.find((e) => e.id === eventId);
+  const taken = registrations.filter((r) => r.eventId === eventId).length;
+  return ev.capacity - taken;
+}
+
+/* ==========================================================
+   4. NAVIGATION (mobile menu + highlight current section)
+   ========================================================== */
+const navToggle = $("#navToggle");
+const siteNav = $("#siteNav");
+
+navToggle.addEventListener("click", function () {
+  const open = siteNav.classList.toggle("open");
+  navToggle.setAttribute("aria-expanded", open);
+  navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+});
+
+// Close the menu after a link is tapped
+siteNav.addEventListener("click", function (e) {
+  if (e.target.tagName === "A") {
+    siteNav.classList.remove("open");
+    navToggle.setAttribute("aria-expanded", "false");
+    navToggle.setAttribute("aria-label", "Open menu");
+  }
+});
+
+// Highlight the nav link of the section on screen
+const navLinks = [...document.querySelectorAll(".site-nav a")];
+const observer = new IntersectionObserver(function (entries) {
+  entries.forEach(function (entry) {
+    if (entry.isIntersecting) {
+      navLinks.forEach((a) => a.classList.toggle("active", a.getAttribute("href") === "#" + entry.target.id));
+    }
+  });
+}, { rootMargin: "-40% 0px -55% 0px" });
+["home", "events", "schedule", "gallery", "registration", "contact"]
+  .forEach((id) => observer.observe(document.getElementById(id)));
+
+/* ==========================================================
+   5. COUNTDOWN
+   ========================================================== */
+const festStart = new Date("2026-11-20T09:00:00");
+
+function updateCountdown() {
+  const diff = festStart - new Date();
+  if (diff <= 0) {
+    $("#countdown").innerHTML = "<p><strong>The festival is on! See you there.</strong></p>";
+    clearInterval(countdownTimer);
+    return;
+  }
+  const pad = (n) => String(n).padStart(2, "0");
+  $("#cdDays").textContent  = pad(Math.floor(diff / 86400000));
+  $("#cdHours").textContent = pad(Math.floor(diff / 3600000) % 24);
+  $("#cdMins").textContent  = pad(Math.floor(diff / 60000) % 60);
+  $("#cdSecs").textContent  = pad(Math.floor(diff / 1000) % 60);
+}
+const countdownTimer = setInterval(updateCountdown, 1000);
+updateCountdown();
+
+/* ==========================================================
+   6. ANNOUNCEMENTS (dynamic updates)
+   ========================================================== */
+function renderAnnouncements(newestFirstFlash) {
+  const sorted = [...announcements].sort((a, b) => new Date(b.time) - new Date(a.time));
+  $("#announcementList").innerHTML = sorted.map(function (a, i) {
+    const when = new Date(a.time).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
+    const cls = newestFirstFlash && i === 0 ? ' class="new"' : "";
+    return `<li${cls}><time datetime="${a.time}">${when}</time>${esc(a.text)}</li>`;
+  }).join("");
+}
+
+$("#announceForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const input = $("#announceText");
+  const text = input.value.trim();
+  const error = $("#announceError");
+
+  if (text.length < 5) {
+    error.textContent = "Write at least 5 characters.";
+    input.setAttribute("aria-invalid", "true");
+    return;
+  }
+  error.textContent = "";
+  input.removeAttribute("aria-invalid");
+
+  announcements.push({ text: text, time: new Date().toISOString() });
+  save("utsav_announcements", announcements);
+  renderAnnouncements(true);
+  input.value = "";
+});
+
+$("#announceReset").addEventListener("click", function () {
+  announcements = [...defaultAnnouncements];
+  save("utsav_announcements", announcements);
+  $("#announceError").textContent = "";
+  renderAnnouncements(false);
+});
+
+/* ==========================================================
+   7. EVENT LISTINGS + FILTERS
+   ========================================================== */
+function renderEvents() {
+  const list = events.filter(function (ev) {
+    const categoryOk = activeCategory === "All" || ev.category === activeCategory;
+    const dayOk = activeDay === "All" || ev.date === activeDay;
+    return categoryOk && dayOk;
+  });
+
+  $("#eventCount").textContent = `Showing ${list.length} of ${events.length} events`;
+
+  if (list.length === 0) {
+    $("#eventGrid").innerHTML = '<p class="empty-state">No events match these filters. Try another category or day.</p>';
+    return;
+  }
+
+  $("#eventGrid").innerHTML = list.map(function (ev) {
+    const left = seatsLeft(ev.id);
+    const seatClass = left === 0 ? "full" : left <= 10 ? "low" : "";
+    const seatText = left === 0 ? "Full" : `${left} seats left`;
+    return `
+      <article class="event-card" data-category="${ev.category}">
+        <span class="tag">${ev.category}</span>
+        <h3>${ev.name}</h3>
+        <ul class="event-meta">
+          <li><strong>Date:</strong> ${formatDate(ev.date)}</li>
+          <li><strong>Time:</strong> ${formatTime(ev.time)}</li>
+          <li><strong>Venue:</strong> ${ev.venue}</li>
+        </ul>
+        <p class="event-desc">${ev.desc}</p>
+        <div class="event-foot">
+          <span class="seats ${seatClass}">${seatText}</span>
+          <button class="btn btn-primary" data-register="${ev.id}" ${left === 0 ? "disabled" : ""}>
+            ${left === 0 ? "Full" : "Register"}
+          </button>
+        </div>
+      </article>`;
+  }).join("");
+}
+
+// Category chips
+$("#categoryFilters").addEventListener("click", function (e) {
+  const chip = e.target.closest(".chip");
+  if (!chip) return;
+  document.querySelectorAll("#categoryFilters .chip").forEach((c) => c.classList.remove("active"));
+  chip.classList.add("active");
+  activeCategory = chip.dataset.category;
+  renderEvents();
+});
+
+// Day dropdown
+$("#dayFilter").addEventListener("change", function () {
+  activeDay = this.value;
+  renderEvents();
+});
+
+// "Register" button on a card: jump to the form with the event selected
+$("#eventGrid").addEventListener("click", function (e) {
+  const btn = e.target.closest("[data-register]");
+  if (!btn) return;
+  $("#rEvent").value = btn.dataset.register;
+  document.getElementById("registration").scrollIntoView({ behavior: "smooth" });
+  setTimeout(() => $("#rName").focus({ preventScroll: true }), 500);
+});
+
+/* ==========================================================
+   8. SCHEDULE (grouped by date, sorted by time)
+   ========================================================== */
+function renderSchedule() {
+  const days = [...new Set(events.map((e) => e.date))].sort();
+  $("#scheduleBox").innerHTML = days.map(function (day) {
+    const rows = events
+      .filter((e) => e.date === day)
+      .sort((a, b) => a.time.localeCompare(b.time))
+      .map((e) => `
+        <tr>
+          <td data-label="Time">${formatTime(e.time)}</td>
+          <td data-label="Event"><strong>${e.name}</strong></td>
+          <td data-label="Category">${e.category}</td>
+          <td data-label="Venue">${e.venue}</td>
+        </tr>`).join("");
+    return `
+      <div class="day-block">
+        <h3>${formatDate(day, true)}</h3>
+        <div class="table-wrap">
+          <table class="data-table stack-table">
+            <thead><tr><th>Time</th><th>Event</th><th>Category</th><th>Venue</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+/* ==========================================================
+   9. FORM VALIDATION HELPERS
+   ========================================================== */
+const patterns = {
+  name:   /^[A-Za-z][A-Za-z .'-]{2,49}$/,
+  email:  /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/,
+  mobile: /^[6-9][0-9]{9}$/
+};
+
+// Show or clear an error under one field
+function setError(inputId, message) {
+  const input = document.getElementById(inputId);
+  const box = document.getElementById(inputId + "Error");
+  box.textContent = message;
+  input.closest(".field").classList.toggle("invalid", Boolean(message));
+  if (message) input.setAttribute("aria-invalid", "true");
+  else input.removeAttribute("aria-invalid");
+  return !message;   // true when the field is OK
+}
+
+function clearErrors(formEl) {
+  formEl.querySelectorAll(".field").forEach((f) => f.classList.remove("invalid"));
+  formEl.querySelectorAll(".error").forEach((s) => (s.textContent = ""));
+  formEl.querySelectorAll("[aria-invalid]").forEach((i) => i.removeAttribute("aria-invalid"));
+}
+
+function showMessage(boxId, type, html) {
+  $(boxId).innerHTML = `<div class="message ${type}">${html}</div>`;
+}
+
+/* ==========================================================
+   10. REGISTRATION FORM
+   ========================================================== */
+const regForm = $("#regForm");
+
+// Fill the event dropdown from the data array
+function fillEventSelect() {
+  $("#rEvent").innerHTML = '<option value="">Select an event</option>' +
+    events.map((ev) => `<option value="${ev.id}">${ev.name} (${formatDate(ev.date)})</option>`).join("");
+}
+
+function validateRegistration() {
+  const name   = $("#rName").value.trim();
+  const email  = $("#rEmail").value.trim();
+  const mobile = $("#rMobile").value.trim();
+  const dept   = $("#rDept").value;
+  const year   = $("#rYear").value;
+  const evId   = Number($("#rEvent").value);
+
+  let ok = true;
+  ok = setError("rName",   !name ? "Enter your full name." : !patterns.name.test(name) ? "Use letters only, at least 3 characters." : "") && ok;
+  ok = setError("rEmail",  !email ? "Enter your email." : !patterns.email.test(email) ? "Enter a valid email like name@college.edu." : "") && ok;
+  ok = setError("rMobile", !mobile ? "Enter your mobile number." : !patterns.mobile.test(mobile) ? "Enter 10 digits starting with 6, 7, 8 or 9." : "") && ok;
+  ok = setError("rDept",   !dept ? "Select your department." : "") && ok;
+  ok = setError("rYear",   !year ? "Select your year." : "") && ok;
+
+  let eventMsg = "";
+  if (!evId) eventMsg = "Select an event.";
+  else if (seatsLeft(evId) <= 0) eventMsg = "This event is full. Choose another one.";
+  else if (registrations.some((r) => r.eventId === evId && r.email.toLowerCase() === email.toLowerCase()))
+    eventMsg = "This email is already registered for this event.";
+  ok = setError("rEvent", eventMsg) && ok;
+
+  return ok;
+}
+
+regForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  if (!validateRegistration()) {
+    showMessage("#regMessage", "error-box", "Please fix the highlighted fields and try again.");
+    const firstBad = regForm.querySelector(".invalid input, .invalid select");
+    if (firstBad) firstBad.focus();
+    return;
+  }
+
+  const ev = events.find((x) => x.id === Number($("#rEvent").value));
+  const reg = {
+    id: "UT26-" + String(registrations.length + 1).padStart(4, "0"),
+    name: $("#rName").value.trim(),
+    email: $("#rEmail").value.trim(),
+    mobile: $("#rMobile").value.trim(),
+    dept: $("#rDept").value,
+    year: $("#rYear").value,
+    eventId: ev.id
+  };
+  registrations.push(reg);
+  save("utsav_registrations", registrations);
+
+  showMessage("#regMessage", "success",
+    `<strong>Registration successful.</strong><br>
+     ${esc(reg.name)}, you are registered for <strong>${ev.name}</strong>
+     on ${formatDate(ev.date)} at ${formatTime(ev.time)}, ${ev.venue}.<br>
+     Your registration ID is <strong>${reg.id}</strong>.`);
+
+  regForm.reset();
+  clearErrors(regForm);
+  renderEvents();          // seat counts change
+  renderMyRegistrations();
+  $("#regMessage").scrollIntoView({ behavior: "smooth", block: "center" });
+});
+
+// Clear errors when the form is reset
+$("#regReset").addEventListener("click", function () {
+  clearErrors(regForm);
+  $("#regMessage").innerHTML = "";
+});
+
+// Only digits in the mobile field
+$("#rMobile").addEventListener("input", function () {
+  this.value = this.value.replace(/\D/g, "");
+});
+
+function renderMyRegistrations() {
+  const box = $("#myRegs");
+  box.hidden = registrations.length === 0;
+  $("#myRegsBody").innerHTML = registrations.slice().reverse().map(function (r) {
+    const ev = events.find((x) => x.id === r.eventId);
+    return `<tr><td>${r.id}</td><td>${esc(r.name)}</td><td>${ev.name}</td></tr>`;
+  }).join("");
+}
+
+/* ==========================================================
+   11. CONTACT FORM
+   ========================================================== */
+const contactForm = $("#contactForm");
+
+contactForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+  const name  = $("#cName").value.trim();
+  const email = $("#cEmail").value.trim();
+  const msg   = $("#cMsg").value.trim();
+
+  let ok = true;
+  ok = setError("cName",  name.length < 3 ? "Enter your name (at least 3 characters)." : "") && ok;
+  ok = setError("cEmail", !patterns.email.test(email) ? "Enter a valid email address." : "") && ok;
+  ok = setError("cMsg",   msg.length < 10 ? "Write at least 10 characters." : "") && ok;
+
+  if (!ok) {
+    showMessage("#contactMessage", "error-box", "Please fix the highlighted fields.");
+    return;
+  }
+
+  showMessage("#contactMessage", "success",
+    `Thanks, ${esc(name)}. Your message has been sent. We will reply to ${esc(email)} soon.`);
+  contactForm.reset();
+  clearErrors(contactForm);
+});
+
+/* ==========================================================
+   12. GALLERY LIGHTBOX
+   ========================================================== */
+const lightbox = $("#lightbox");
+
+document.querySelector(".gallery").addEventListener("click", function (e) {
+  const fig = e.target.closest("figure");
+  if (!fig) return;
+  const img = fig.querySelector("img");
+  $("#lightboxImg").src = img.src;
+  $("#lightboxImg").alt = img.alt;
+  $("#lightboxCaption").textContent = fig.querySelector("figcaption").textContent;
+  lightbox.hidden = false;
+  $("#lightboxClose").focus();
+});
+
+function closeLightbox() { lightbox.hidden = true; }
+$("#lightboxClose").addEventListener("click", closeLightbox);
+lightbox.addEventListener("click", function (e) { if (e.target === lightbox) closeLightbox(); });
+document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeLightbox(); });
+
+/* ==========================================================
+   13. FIRST DRAW
+   ========================================================== */
+fillEventSelect();
+renderAnnouncements(false);
+renderEvents();
+renderSchedule();
+renderMyRegistrations();
+
+</script>
+</body>
+</html>
